@@ -1,0 +1,1 @@
+from .rifle import Rifle

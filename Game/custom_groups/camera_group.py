@@ -1,15 +1,14 @@
 from settings import *
 import pygame
-from tiles import Floor
 
 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self, surface):
         super().__init__()
-        self.display_surface = surface
+        self.surface = surface
 
     def draw(self, player):
         offset = player.rect.center - CENTER
         for sprite in sorted(self.sprites(), key=lambda x: (-x.draw_priority, x.rect.centery)):
             offset_rect = sprite.rect.topleft - offset
-            self.display_surface.blit(sprite.image, offset_rect)
+            self.surface.blit(sprite.image, offset_rect)

@@ -1,4 +1,3 @@
-from settings import *
 import math
 import pygame
 
@@ -6,6 +5,7 @@ import pygame
 class BaseWeapon(pygame.sprite.Sprite):
     def __init__(self, holder):
         super().__init__(holder.level.all_sprites, holder.level.visible_sprites)
+        self.draw_priority = 0
         self.holder = holder
         self.last_shot = 0
         if self.holder in self.holder.level.players_group:
@@ -18,7 +18,7 @@ class BaseWeapon(pygame.sprite.Sprite):
 
     def shoot(self):
         if pygame.time.get_ticks() - self.last_shot >= self.atk_speed:
-            self.projectile(self.projectile_groups, self, self.holder.rotate_angle, self.holder.pos)
+            self.projectile(self.projectile_groups, self.holder, self.holder.pos)
             self.last_shot = pygame.time.get_ticks()
 
     def rotate(self):

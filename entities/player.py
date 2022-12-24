@@ -9,24 +9,22 @@ from weapons import Rifle
 
 
 class Player(Entity):
-    __images = [pygame.transform.scale(load_image(f'player\\{image}'), (TILESIZE - 10, TILESIZE)) for image in os.listdir(r'sprite_images\player')]
+    __sprites = [load_image(f'player\\{image}') for image in os.listdir(r'sprite_images\player')]
+    __sprites = [pygame.transform.scale(image, (image.get_size()[0] * 1.2, image.get_size()[1] * 1.2))
+                 for image in __sprites]
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        self.sprites = Player.__sprites
         self.cur_sprite = 0
-        self.image = Player.__images[self.cur_sprite]
+        self.anim_speed = 12 / FPS  # 12 frame per second
+        self.image = self.sprites[self.cur_sprite]
         self.rect = self.image.get_rect()
+        self.hitbox = self.rect.inflate(0, -20)
+        super().__init__(*args, **kwargs)
+
         self.stats = {'speed': 5}
         self.first_weapon = Rifle(self)
         self.second_weapon = None
-
-    def animation(self):
-        if self.direction.magnitude() != 0:
-            self.cur_sprite = (self.cur_sprite + 0.2) % len(Player.__images)
-        image = Player.__images[int(self.cur_sprite)]
-        if 90 < math.degrees(self.rotate_angle) < 180 or -180 < math.degrees(self.rotate_angle) < -90:
-            image = pygame.transform.flip(image, True, False)
-        self.image = image
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -54,20 +52,6 @@ class Player(Entity):
         asin_a = math.asin(mouse_pos_relative.y / mouse_pos_relative.length())
 
         self.rotate_angle = acos_a * (asin_a // abs(asin_a) if asin_a != 0 else 1)
-
-    def collision(self, direction):
-        if direction == 'hor':
-            if sprite := pygame.sprite.spritecollideany(self, self.level.obstacle_sprites):
-                if self.direction.x > 0:
-                    self.rect.right = sprite.rect.left
-                if self.direction.x < 0:
-                    self.rect.left = sprite.rect.right
-        if direction == 'vert':
-            if sprite := pygame.sprite.spritecollideany(self, self.level.obstacle_sprites):
-                if self.direction.y > 0:
-                    self.rect.bottom = sprite.rect.top
-                if self.direction.y < 0:
-                    self.rect.top = sprite.rect.bottom
 
     def draw_aim(self):
         cos_a, sin_a = self.rotate_angle_vector

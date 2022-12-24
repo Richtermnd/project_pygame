@@ -1,3 +1,5 @@
+from settings import *
+import pygame
 from .base_weapon import BaseWeapon
 from projectiles import Bullet
 from utils import load_image
@@ -5,7 +7,6 @@ from utils import load_image
 
 class Rifle(BaseWeapon):
     __image = load_image(r'weapons\carbine.png')
-    # __image = __image.convert_alpha()
 
     def __init__(self, *args, **kwargs):
         self.default_image = Rifle.__image

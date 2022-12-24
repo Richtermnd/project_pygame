@@ -9,6 +9,7 @@ class Floor(Tile):
                for image in os.listdir(r'sprite_images\tiles\floor')}
 
     def __init__(self, groups, topleft):
+        self.draw_priority = 2
         self.image = Floor._images['floor.png']
         if random.random() > 0.9:
             self.image = random.choice(list(Floor._images.values()))

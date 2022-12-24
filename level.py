@@ -1,12 +1,10 @@
 from settings import *
 import pygame
 import math
-
-
 import utils
 import custom_groups
 from tiles import Floor, Wall
-from entities import Player
+import entities
 
 
 def load_map(level_file):
@@ -33,7 +31,8 @@ class Level(pygame.Surface):
         self.enemy_projectile_sprites = custom_groups.ProjectileGroup(self.players_group, self.obstacle_sprites)
 
         self.screen = pygame.display.get_surface()
-        self.player = Player((self.all_sprites, self.players_group, self.visible_sprites), self.enemies_group, self)
+        self.player = entities.Player((self.all_sprites, self.players_group, self.visible_sprites),
+                                      self.enemies_group, self)
         self.level_map = load_map(level_file)
         self.generate_level()
 
@@ -51,12 +50,23 @@ class Level(pygame.Surface):
                     case 'p':
                         self.player.set_pos(topleft)
                         Floor((self.all_sprites, self.visible_sprites), topleft)
+                    case 'r':
+                        entities.BattleBeetle((self.all_sprites, self.enemies_group, self.visible_sprites),
+                                               self.players_group, self).set_pos(topleft)
+
+                        Floor((self.all_sprites, self.visible_sprites), topleft)
 
     def is_obstacle(self, pos):
         try:
             return self.level_map[pos[1]][pos[0]] == '#'
         except IndexError:
             return False
+
+    def is_correct_cell(self, pos):
+        x, y = pos
+        is_correct_x = 0 <= x < self.width
+        is_correct_y = 0 <= y < self.height
+        return is_correct_x and is_correct_y
 
     def update(self):
         self.all_sprites.update()
@@ -66,3 +76,11 @@ class Level(pygame.Surface):
     def draw(self):
         self.fill((0, 0, 0))
         self.visible_sprites.draw(self.player)
+
+    @property
+    def width(self):
+        return len(self.level_map[0])
+
+    @property
+    def height(self):
+        return len(self.level_map)

@@ -1,19 +1,19 @@
 from settings import *
-from utils import angle_vector
+import math
 import pygame
 
 
 class BaseProjectile(pygame.sprite.Sprite):
-    def __init__(self, groups, weapon, angle, pos):
+    def __init__(self, groups, holder, pos):
         super().__init__(*groups)
+        self.draw_priority = 0
         self.rect = self.image.get_rect()
         self.rect.center = pos
         self.mask = self.image.get_masks()
 
-        self.weapon = weapon
         self.shoot_time = pygame.time.get_ticks()
-        self.angle = angle
-        self.direction = angle_vector(angle)
+        self.angle = holder.rotate_angle
+        self.direction = holder.rotate_angle_vector
         self.rotate()
 
     def rotate(self):

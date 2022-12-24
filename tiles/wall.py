@@ -32,8 +32,10 @@ class Wall(Tile):
         elif left:
             hor = 2
 
+        self.draw_priority = 1
         self.image = Wall._images[f'wall_{vert}{hor}.png']
         super().__init__(groups, topleft)
+        self.hitbox = self.rect.inflate(-20, -20)
 
 
 

@@ -4,8 +4,14 @@ import sys
 import pygame
 
 
-def angle_vector(angle):
+def angle_to_vector(angle):
     return pygame.Vector2(math.cos(angle), math.sin(angle))
+
+
+def vector_to_angle(vector: pygame.Vector2):
+    acos_a = math.acos(vector.x / vector.length())
+    asin_a = math.asin(vector.y / vector.length())
+    return acos_a * (asin_a // abs(asin_a) if asin_a != 0 else 1)
 
 
 def debug(info, surface, index=0):
@@ -46,3 +52,15 @@ def tile_neighbors(field, cell):
             res[y - cell_y + 1][x - cell_x + 1] = field[y][x]
     return res
 
+
+def neighbors(field, cell):
+    cell_x, cell_y = cell
+    start_y, end_y = max(0, cell_y - 1), min(len(field), cell_y + 2)
+    start_x, end_x = max(0, cell_x - 1), min(len(field[0]), cell_x + 2)
+    res = []
+    for y in range(start_y, end_y):
+        for x in range(start_x, end_x):
+            if (x, y) == cell:
+                continue
+            res.append((x, y))
+    return res

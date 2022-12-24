@@ -17,10 +17,3 @@ class ProjectileGroup(pygame.sprite.Group):
             if obstacle_collide:
                 if not sprite.is_spectral:
                     sprite.kill()
-
-
-
-
-
-
-

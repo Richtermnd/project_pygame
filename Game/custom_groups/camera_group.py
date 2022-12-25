@@ -1,4 +1,4 @@
-from settings import *
+from Game.settings import *
 import pygame
 
 

@@ -6,7 +6,7 @@ import random
 
 class Floor(Tile):
     _images = {image: load_image(f'tiles\\floor\\{image}')
-               for image in os.listdir(r'sprite_images\tiles\floor')}
+               for image in os.listdir(r'..\sprite_images\tiles\floor')}
 
     def __init__(self, groups, topleft):
         self.draw_priority = 2

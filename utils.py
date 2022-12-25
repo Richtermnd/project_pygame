@@ -22,8 +22,13 @@ def debug(info, surface, index=0):
     surface.blit(debug_surf, debug_rect)
 
 
+def terminate():
+    pygame.quit()
+    sys.exit()
+
+
 def load_image(name, colorkey=None):
-    fullname = os.path.join(r'sprite_images', name)
+    fullname = os.path.join(r'..\sprite_images', name)
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
@@ -53,10 +58,10 @@ def tile_neighbors(field, cell):
     return res
 
 
-def neighbors(field, cell):
+def neighbors(field, cell, dist=1):
     cell_x, cell_y = cell
-    start_y, end_y = max(0, cell_y - 1), min(len(field), cell_y + 2)
-    start_x, end_x = max(0, cell_x - 1), min(len(field[0]), cell_x + 2)
+    start_y, end_y = max(0, cell_y - dist), min(len(field), cell_y + dist + 1)
+    start_x, end_x = max(0, cell_x - dist), min(len(field[0]), cell_x + dist + 1)
     res = []
     for y in range(start_y, end_y):
         for x in range(start_x, end_x):

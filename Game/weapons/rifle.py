@@ -1,7 +1,5 @@
-from settings import *
-import pygame
 from .base_weapon import BaseWeapon
-from projectiles import Bullet
+from Game.projectiles import Bullet
 from utils import load_image
 
 

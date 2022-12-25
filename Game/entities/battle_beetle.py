@@ -1,4 +1,4 @@
-from settings import *
+from Game.settings import *
 import os
 from utils import load_image
 import pygame
@@ -7,7 +7,7 @@ from .base_enemy import BaseEnemy
 
 class BattleBeetle(BaseEnemy):
     __sprites = [load_image(f'enemies\\battle_beetle\\{image}')
-                 for image in os.listdir(r'sprite_images\enemies\battle_beetle')]
+                 for image in os.listdir(r'..\sprite_images\enemies\battle_beetle')]
 
     def __init__(self, *args, **kwargs):
         self.sprites = BattleBeetle.__sprites

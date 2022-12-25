@@ -5,7 +5,7 @@ from utils import load_image
 
 class Wall(Tile):
     _images = {image: load_image(f'tiles\\walls\\{image}')
-               for image in os.listdir(r'sprite_images\tiles\walls')}
+               for image in os.listdir(r'..\sprite_images\tiles\walls')}
 
     def __init__(self, groups, topleft, neighbors):
         top, bottom = neighbors[0][1] == '#', neighbors[2][1] == '#'

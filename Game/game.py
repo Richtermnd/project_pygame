@@ -1,4 +1,4 @@
-from settings import *
+from Game.settings import *
 
 import pygame
 from level import Level
@@ -10,7 +10,7 @@ class Game:
         self.screen = pygame.display.get_surface()
         self.clock = pygame.time.Clock()
         self.running = True
-        self.level = Level('levels/level1.txt')
+        self.level = Level(r'..\levels\level1.txt')
 
     def start(self):
         self.game_cycle()

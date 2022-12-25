@@ -1,15 +1,15 @@
-from settings import *
+from Game.settings import *
 import math
 import pygame
 import os
 
 from utils import load_image
 from .entity import Entity
-from weapons import Rifle
+from Game.weapons import Rifle
 
 
 class Player(Entity):
-    __sprites = [load_image(f'player\\{image}') for image in os.listdir(r'sprite_images\player')]
+    __sprites = [load_image(f'player\\{image}') for image in os.listdir(r'..\sprite_images\player')]
     __sprites = [pygame.transform.scale(image, (image.get_size()[0] * 1.2, image.get_size()[1] * 1.2))
                  for image in __sprites]
 

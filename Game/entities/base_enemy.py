@@ -1,4 +1,4 @@
-from settings import *
+from Game.settings import *
 import pygame
 from utils import neighbors, vector_to_angle
 from .entity import Entity

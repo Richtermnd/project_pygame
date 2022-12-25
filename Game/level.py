@@ -1,6 +1,5 @@
-from settings import *
+from Game.settings import *
 import pygame
-import math
 import utils
 import custom_groups
 from tiles import Floor, Wall
@@ -52,7 +51,7 @@ class Level(pygame.Surface):
                         Floor((self.all_sprites, self.visible_sprites), topleft)
                     case 'r':
                         entities.BattleBeetle((self.all_sprites, self.enemies_group, self.visible_sprites),
-                                               self.players_group, self).set_pos(topleft)
+                                              self.players_group, self).set_pos(topleft)
 
                         Floor((self.all_sprites, self.visible_sprites), topleft)
 

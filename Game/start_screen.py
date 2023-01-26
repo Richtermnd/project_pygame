@@ -23,10 +23,6 @@ class StartScreen(pygame.Surface):
                                                                                 (WIDTH * 0.25, HEIGHT * 0.15)),
                                                       text='Start',
                                                       manager=self.manager)
-        self.table_btn = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((WIDTH * 0.7, HEIGHT * 0.6),
-                                                                                (WIDTH * 0.25, HEIGHT * 0.15)),
-                                                      text='Table',
-                                                      manager=self.manager)
         self.level_select = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((WIDTH * 0.35, HEIGHT * 0.6),
                                                                                          (WIDTH * 0.3, HEIGHT * 0.15)),
                                                                manager=self.manager,

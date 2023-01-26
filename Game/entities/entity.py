@@ -20,7 +20,6 @@ class Entity(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.rotate_angle = math.pi / 2
 
-# 1.0 -> 1.2 -> 1.4 -> 1.6 -> 1.8 -> 2.0
     def animation(self):
         if self.direction.magnitude() != 0:
             self.cur_sprite = (self.cur_sprite + self.anim_speed) % len(self.sprites)

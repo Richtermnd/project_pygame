@@ -9,8 +9,9 @@ class ProjectileGroup(pygame.sprite.Group):
 
     def update(self, *args, **kwargs) -> None:
         for sprite in self.sprites():
-            targets_collide = pygame.sprite.spritecollide(sprite, self.targets, True)
+            targets_collide = pygame.sprite.spritecollide(sprite, self.targets, False)
             if targets_collide:
+                [spr.change_hp(-sprite.damage) for spr in targets_collide]
                 if not sprite.is_piercing:
                     sprite.kill()
             obstacle_collide = pygame.sprite.spritecollideany(sprite, self.obstacles)

@@ -6,21 +6,19 @@ from .base_enemy import BaseEnemy
 
 
 class BattleBeetle(BaseEnemy):
-    __sprites = [load_image(f'enemies\\battle_beetle\\{image}')
-                 for image in os.listdir(r'..\sprite_images\enemies\battle_beetle')]
+    __sprites = [load_image(f'enemies/battle_beetle/{image}')
+                 for image in os.listdir(r'../sprite_images/enemies/battle_beetle')]
+    _death_sound = pygame.mixer.Sound('sounds/enemy_death_sound.ogg')
+    stats = {'max hp': 20, 'speed': 8, 'vision': 10, 'damage': 2}
 
     def __init__(self, *args, **kwargs):
         self.sprites = BattleBeetle.__sprites
-        self.cur_sprite = 0
-        self.anim_speed = 5 / FPS
-        self.image = self.sprites[self.cur_sprite]
-        self.rect = pygame.Rect(5, 5, self.image.get_size()[0] - 5, self.image.get_size()[1] - 5)
-        self.hitbox = self.rect.inflate(-20, -20)
+        self.death_sound = BattleBeetle._death_sound
         super().__init__(*args, **kwargs)
-        self.stats = {'speed': 2, 'vision': 10}
+        self.hitbox = self.rect.inflate(-20, -20)
+        self.anim_speed = 5 / FPS
 
     def update(self):
-        self.move()
-        self.anti_stuck()
-        self.check_target()
-        self.animation()
+        super().update()
+        if self.hitbox.colliderect(self.target.hitbox):
+            self.deal_damage(self.stats['damage'])

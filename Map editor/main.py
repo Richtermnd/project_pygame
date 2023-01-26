@@ -1,5 +1,4 @@
 import os
-import sys
 import math
 
 import pygame
@@ -47,7 +46,8 @@ class Wall(pygame.sprite.Sprite):
             hor = 2
 
         self.draw_priority = 1
-        self.image = Wall._images[f'wall_{vert}{hor}.png']
+        self.fname = f'wall_{vert}{hor}.png'
+        self.image = Wall._images[self.fname]
         self.rect = self.image.get_rect()
         self.rect.topleft = topleft
         super().__init__(all_sprites)
@@ -95,10 +95,14 @@ class Interface(pygame.Surface):
             return
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == self.save_btn:
-                fd = pygame_gui.windows.UIFileDialog(pygame.Rect((5, 5), (300, 400)), manager=self.parent.gui.manager)
+                fd = pygame_gui.windows.UIFileDialog(pygame.Rect((5, 5), (300, 400)),
+                                                     manager=self.parent.gui.manager,
+                                                     initial_file_path='../levels/levels')
                 fd.type = 'save'
             if event.ui_element == self.load_btn:
-                fd = pygame_gui.windows.UIFileDialog(pygame.Rect((5, 5), (300, 400)), manager=self.parent.gui.manager)
+                fd = pygame_gui.windows.UIFileDialog(pygame.Rect((5, 5), (300, 400)),
+                                                     manager=self.parent.gui.manager,
+                                                     initial_file_path='../levels/levels')
                 fd.type = 'load'
             if event.ui_element == self.brush_increase:
                 self.parent.canvas.change_brush_size(1)
@@ -145,28 +149,9 @@ class Canvas(pygame.Surface):
     def change_map(self, pos, tile):
         cell_x = (pos[0] - IW) // TILE_SIZE
         cell_y = pos[1] // TILE_SIZE
-        start_cell = cell_x, cell_y
-        painted_cells = [(cell_x, cell_y)]
-        self.map[cell_y][cell_x] = tile
-        while painted_cells:
-            x, y = painted_cells.pop()
-            for dx, dy in (1, 0), (0, 1), (-1, 0), (0, -1):
-                cur_cell = cur_x, cur_y = x + dx, y + dy
-                if not self.is_correct_cell(cur_cell):
-                    continue
-                if self.map[cur_y][cur_x] == tile:
-                    continue
-                if math.dist(cur_cell, start_cell) <= self.brush_size - 1:
-                    self.map[cur_y][cur_x] = tile
-                    painted_cells.append(cur_cell)
-        self.update_map()
-
-    def alt_change_map(self, pos, tile):
-        cell_x = (pos[0] - IW) // TILE_SIZE
-        cell_y = pos[1] // TILE_SIZE
         cell = cell_x, cell_y
         self.map[cell_y][cell_x] = tile
-        r = self.brush_size - 1 if self.brush_size % 2 else self.brush_size
+        r = self.brush_size - 1 * self.brush_size % 2
         for neighbor in utils.neighbors(self.map, cell, dist=r):
             if math.dist(neighbor, cell) <= self.brush_size - 1:
                 self.map[neighbor[1]][neighbor[0]] = tile
@@ -184,9 +169,9 @@ class Canvas(pygame.Surface):
             return
 
         if mouse_buttons[0]:
-            self.alt_change_map(mouse_pos, '#')
+            self.change_map(mouse_pos, '#')
         elif mouse_buttons[2]:
-            self.alt_change_map(mouse_pos, '.')
+            self.change_map(mouse_pos, '.')
 
     def save(self, path):
         with open(path, mode='w', encoding='UTF-8') as f:

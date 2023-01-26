@@ -5,15 +5,22 @@ import pygame
 
 
 class Entity(pygame.sprite.Sprite):
+    draw_priority = 1
+
     def __init__(self, groups, targets, level):
         super().__init__(*groups)
-        self.draw_priority = 1
+        self.cur_sprite = 0
+        self.anim_speed = 12 / FPS  # 12 frame per second
+        self.image = self.sprites[self.cur_sprite]
+        self.rect = self.image.get_rect()
+
         self.level = level
         self.targets = targets
+        self.hp = self.stats['max hp']
         self.direction = pygame.math.Vector2()
-        self.stats = {}
         self.rotate_angle = math.pi / 2
 
+# 1.0 -> 1.2 -> 1.4 -> 1.6 -> 1.8 -> 2.0
     def animation(self):
         if self.direction.magnitude() != 0:
             self.cur_sprite = (self.cur_sprite + self.anim_speed) % len(self.sprites)
@@ -27,15 +34,20 @@ class Entity(pygame.sprite.Sprite):
             self.direction = self.direction.normalize()
 
         self.hitbox.x += self.direction.x * self.stats['speed']
-        self.collision('hor')
+        is_hor_stuck = self.collision('hor')
 
         self.hitbox.y += self.direction.y * self.stats['speed']
-        self.collision('vert')
+        is_vert_stuck = self.collision('vert')
 
         self.rect.center = self.hitbox.center
+        return is_hor_stuck, is_vert_stuck
+
+    def change_hp(self, change):
+        self.hp += change
 
     def update(self):
-        pass
+        if self.hp <= 0:
+            self.kill()
 
     def collision(self, direction):
         if direction == 'hor':

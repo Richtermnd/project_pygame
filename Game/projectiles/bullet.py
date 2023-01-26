@@ -9,7 +9,7 @@ class Bullet(BaseProjectile):
         self.image = Bullet.__image
         super().__init__(*args, **kwargs)
         self.stats = {'tiles_per_second': 20,
-                      'damage': 3,
-                      'range': 10,
+                      'damage': 4,
+                      'range': 9,
                       'is_piercing': False,
                       'is_spectral': False}

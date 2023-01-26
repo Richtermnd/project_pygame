@@ -6,6 +6,9 @@ import pygame_gui
 import utils
 
 
+""" Map Editor """
+
+
 pygame.init()
 CANVAS = CW, CH = 1280, 720
 INTERFACE = IW, IH = 200, 720
@@ -24,6 +27,7 @@ class Wall(pygame.sprite.Sprite):
         top, bottom = neighbors[0][1] == '#', neighbors[2][1] == '#'
         left, right = neighbors[1][0] == '#', neighbors[1][2] == '#'
 
+        # choose image
         vert = 'row'
         hor = 'col'
 
@@ -57,7 +61,6 @@ class Floor(pygame.sprite.Sprite):
     _image = pygame.transform.scale(utils.load_image(r'tiles\floor\floor.png'), (TILE_SIZE, TILE_SIZE))
 
     def __init__(self, topleft):
-        self.draw_priority = 2
         self.image = Floor._image
         self.rect = self.image.get_rect()
         self.rect.topleft = topleft
@@ -175,7 +178,7 @@ class Canvas(pygame.Surface):
 
     def save(self, path):
         with open(path, mode='w', encoding='UTF-8') as f:
-            [print(''.join(row), file=f) for row in self.map]
+            [print(''.join(row), file=f, end='') for row in self.map]
 
     def load(self, path):
         with open(path, mode='r', encoding='UTF-8') as f:

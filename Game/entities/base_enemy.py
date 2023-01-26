@@ -18,6 +18,7 @@ class BaseEnemy(Entity):
         self.is_touch_damage = False
 
     def move(self):
+        """ Move and try to don't stuck"""
         is_stuck = super().move()
         hor, vert = is_stuck
         if hor:
@@ -51,6 +52,7 @@ class BaseEnemy(Entity):
         self.direction = pygame.Vector2(self.next_cell) - pygame.Vector2(self.level_pos)
 
     def find_path(self):
+        """ Wave algorithm """
         start, finish = self.level_pos, self.target.level_pos
         distances = [[-1 if col == '#' else float('inf') for col in row] for row in self.level.level_map]
         neighbors_cross = [(0, -1), (-1, 0), (1, 0), (0, 1)]  # cross shifts

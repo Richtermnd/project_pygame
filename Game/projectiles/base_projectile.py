@@ -4,11 +4,11 @@ import pygame
 
 
 class BaseProjectile(pygame.sprite.Sprite):
+    draw_priority = 0
+
     def __init__(self, groups, holder, pos):
         super().__init__(*groups)
-        self.draw_priority = 0
         self.rect = self.image.get_rect().inflate(-10, -10)
-
         self.shoot_time = pygame.time.get_ticks()
         self.angle = holder.rotate_angle
         self.direction = holder.rotate_angle_vector

@@ -3,6 +3,7 @@ import pygame
 
 
 class CameraGroup(pygame.sprite.Group):
+    """ Draw sprites relative player """
     def __init__(self, surface):
         super().__init__()
         self.surface = surface

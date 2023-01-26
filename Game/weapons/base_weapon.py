@@ -31,14 +31,11 @@ class BaseWeapon(pygame.sprite.Sprite):
             image = pygame.transform.flip(image, False, True)
         self.image = pygame.transform.rotate(image, -angle)
         self.rect = self.image.get_rect(center=self.rect.center)
-
-    def update_pos(self):
         self.rect.center = self.holder.rect.center
 
     def update(self):
         if self.is_active:
             self.rotate()
-            self.update_pos()
         else:
             self.image = pygame.Surface((0, 0))
 

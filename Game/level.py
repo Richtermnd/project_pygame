@@ -17,6 +17,7 @@ font = pygame.font.Font(None, 40)
 
 
 class ScoreCounter(pygame.Surface):
+    """ Surface with score counter """
     def __init__(self, level):
         self.level = level
         super().__init__((150, 50), pygame.SRCALPHA)
@@ -32,6 +33,7 @@ class ScoreCounter(pygame.Surface):
 
 
 class Level(pygame.Surface):
+    """ Level """
     def __init__(self, game, level_file):
         super().__init__(SIZE)
         self.game = game
@@ -55,10 +57,11 @@ class Level(pygame.Surface):
         self.score_counter = ScoreCounter(self)
         self.player = entities.Player((self.all_sprites, self.players_group, self.visible_sprites),
                                       self.enemies_group, self)
-        self.level_map = load_map(level_file)
+        self.level_map = load_map(level_file)  # load from file
         self.generate_level()
 
     def generate_level(self):
+        """ Generate sprites """
         for y, row in enumerate(self.level_map):
             for x, col in enumerate(row):
                 topleft = x * TILESIZE, y * TILESIZE
@@ -72,6 +75,7 @@ class Level(pygame.Surface):
         self.spawn_player()
 
     def spawn_player(self):
+        """ Spawn player in correct position"""
         x, y = random.randrange(len(self.level_map[0])), random.randrange(len(self.level_map))
         while self.is_obstacle((x, y)):
             x, y = random.randrange(len(self.level_map[0])), random.randrange(len(self.level_map))
@@ -87,12 +91,18 @@ class Level(pygame.Surface):
                               self.players_group, self).set_pos((x * TILESIZE, y * TILESIZE))
 
     def is_obstacle(self, pos):
+        """ Return is obstacle of cell """
         try:
             return self.level_map[pos[1]][pos[0]] == '#'
         except IndexError:
             return False
 
     def is_correct_cell(self, pos):
+        """
+        Return is correct cell
+            0 <= pos.x <= width
+            0 <= pos.y <= height
+        """
         x, y = pos
         is_correct_x = 0 <= x < self.width
         is_correct_y = 0 <= y < self.height

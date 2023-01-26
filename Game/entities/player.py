@@ -13,6 +13,7 @@ font = pygame.font.Font(None, 40)
 
 
 class PlayerInterface(pygame.Surface):
+    """ HP bar and weapons """
     def __init__(self, player):
         super().__init__((250, 100), pygame.SRCALPHA)
         self.player = player
@@ -34,6 +35,7 @@ class PlayerInterface(pygame.Surface):
         self.blit(self.hp_bar, (5, 5))
 
     def draw_weapon_block(self):
+        # first weapon
         surf = pygame.Surface((120, 40), pygame.SRCALPHA)
         pygame.draw.rect(surf, 'black', surf.get_rect(), border_radius=3)
         pygame.draw.rect(surf, 'white', surf.get_rect(), 5, border_radius=3)
@@ -42,6 +44,7 @@ class PlayerInterface(pygame.Surface):
         surf.blit(self.player.first_weapon.default_image, (pos_x, pos_y))
         self.weapon_block.blit(surf, (0, 0))
 
+        # second weapon
         surf = pygame.Surface((120, 40), pygame.SRCALPHA)
         surf.convert_alpha()
         pygame.draw.rect(surf, 'black', surf.get_rect(), border_radius=3)
@@ -78,6 +81,7 @@ class Player(Entity):
         self.interface = PlayerInterface(self)
 
     def input(self):
+        """ input handler """
         keys = pygame.key.get_pressed()
         mouse_buttons = pygame.mouse.get_pressed(num_buttons=3)
         mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
@@ -96,6 +100,7 @@ class Player(Entity):
         else:
             self.direction.x = 0
 
+        # swap weapon
         if keys[pygame.K_SPACE]:
             if pygame.time.get_ticks() - self.last_swap > 500:
                 self.first_weapon, self.second_weapon = self.second_weapon, self.first_weapon
@@ -105,10 +110,9 @@ class Player(Entity):
 
         if mouse_buttons[0]:
             self.first_weapon.shoot()
-
+        # calculate rotate angle
         acos_a = math.acos(mouse_pos_relative.x / mouse_pos_relative.length())
         asin_a = math.asin(mouse_pos_relative.y / mouse_pos_relative.length())
-
         self.rotate_angle = acos_a * (asin_a // abs(asin_a) if asin_a != 0 else 1)
 
     def draw_aim(self):

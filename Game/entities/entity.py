@@ -1,3 +1,4 @@
+import utils
 from Game.settings import *
 
 import math
@@ -5,6 +6,7 @@ import pygame
 
 
 class Entity(pygame.sprite.Sprite):
+    """ Base entity class """
     draw_priority = 1
 
     def __init__(self, groups, targets, level):
@@ -21,9 +23,11 @@ class Entity(pygame.sprite.Sprite):
         self.rotate_angle = math.pi / 2
 
     def animation(self):
-        if self.direction.magnitude() != 0:
+        if self.direction.magnitude() != 0:  # animate only if move
             self.cur_sprite = (self.cur_sprite + self.anim_speed) % len(self.sprites)
-        image = self.sprites[int(self.cur_sprite)]
+        image = self.sprites[int(self.cur_sprite)]  # get image
+
+        # rotating
         if 90 < math.degrees(self.rotate_angle) < 180 or -180 < math.degrees(self.rotate_angle) < -90:
             image = pygame.transform.flip(image, True, False)
         self.image = image
@@ -49,6 +53,10 @@ class Entity(pygame.sprite.Sprite):
             self.kill()
 
     def collision(self, direction):
+        """
+        Collide method:
+            direction 'hor'|'vert'
+        """
         if direction == 'hor':
             for sprite in self.level.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
@@ -70,16 +78,18 @@ class Entity(pygame.sprite.Sprite):
 
     @property
     def pos(self):
+        """ Vector of pos"""
         return pygame.math.Vector2(self.rect.center)
 
     @property
     def level_pos(self):
+        """ Level pos"""
         x, y = self.pos
         return int(x // TILESIZE), int(y // TILESIZE)
 
     @property
     def rotate_angle_vector(self):
-        return pygame.Vector2(math.cos(self.rotate_angle), math.sin(self.rotate_angle))
+        return utils.angle_to_vector(self.rotate_angle)
 
     def set_pos(self, topleft):
         x, y = topleft

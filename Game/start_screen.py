@@ -6,6 +6,7 @@ import pygame_gui
 
 
 class StartScreen(pygame.Surface):
+    """ Start screen """
     previews = {file.split('.')[0]: f'../levels/{file}'
                 for file in os.listdir('../levels')}
 

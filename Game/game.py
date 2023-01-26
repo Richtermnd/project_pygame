@@ -10,12 +10,14 @@ from end_screen import EndScreen
 
 
 class Game:
+    """ Game class """
     def __init__(self):
-        pygame.init()
         self.screen = pygame.display.get_surface()
         self.clock = pygame.time.Clock()
         self.running = True
         self.is_quit = False
+        # path to level file
+        # set in StartScreen
         self.f_level = ''
 
     def start(self):
@@ -32,7 +34,7 @@ class Game:
                 self.is_quit = True
 
     def game_cycle(self):
-        self.level = Level(self, self.f_level)
+        self.level = Level(self, self.f_level)  # load level
         while self.running:
             self.clock.tick(FPS)
             self.event_handler()

@@ -8,6 +8,7 @@ class ProjectileGroup(pygame.sprite.Group):
         self.obstacles = obstacles
 
     def update(self, *args, **kwargs) -> None:
+        """ Check hits """
         for sprite in self.sprites():
             targets_collide = pygame.sprite.spritecollide(sprite, self.targets, False)
             if targets_collide:
